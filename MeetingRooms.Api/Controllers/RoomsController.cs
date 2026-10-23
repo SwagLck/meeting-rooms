@@ -18,6 +18,6 @@ public class RoomsController : ControllerBase
     [HttpGet]
     public async Task<List<Room>> Getall()
     {
-        return await _db.Rooms.ToListAsync();
+        return await _db.Rooms.Include(r => r.Equipment).ToListAsync();
     }
 }
