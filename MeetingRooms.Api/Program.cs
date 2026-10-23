@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MeetingRooms.Api.Data;
 using MeetingRooms.Api.Models;
+using MeetingRooms.Api.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services.AddDbContext<AppDbContext>(o => o.UseInMemoryDatabase("MeetingRooms"));
 var app = builder.Build();
 

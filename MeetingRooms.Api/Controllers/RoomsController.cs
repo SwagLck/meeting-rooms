@@ -1,23 +1,24 @@
+using MeetingRooms.Api.Dtos;
+using MeetingRooms.Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MeetingRooms.Api.Data;
-using MeetingRooms.Api.Models;
 
-namespace MeetingRooms.Api.Controllers;
-[ApiController]
-[Route("api/[controller]")]
-public class RoomsController : ControllerBase
+namespace MeetingRooms.Api.Controllers
 {
-    private readonly AppDbContext _db;
-
-    public RoomsController(AppDbContext db)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class RoomsController : ControllerBase
     {
-        _db = db;
-    }
+        private readonly IRoomService _rooms;
 
-    [HttpGet]
-    public async Task<List<Room>> Getall()
-    {
-        return await _db.Rooms.Include(r => r.Equipment).ToListAsync();
+        public RoomsController(IRoomService room)
+        {
+            _rooms = room;
+        }
+
+        [HttpGet]
+        public async Task<List<RoomDto>> GetAll([FromQuery] RoomFilter filter)
+        {
+            return await _rooms.GetAllAsync(filter);
+        }
     }
 }
