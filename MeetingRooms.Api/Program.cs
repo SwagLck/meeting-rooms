@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using MeetingRooms.Api.Data;
 using MeetingRooms.Api.Models;
 using MeetingRooms.Api.Services;
+using MeetingRooms.Api.Options;
+using MeetingRooms.Api.Rules;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +16,23 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+
+// Add booking rules
+builder.Services.Configure<BookingRulesOptions>(
+    builder.Configuration.GetSection(BookingRulesOptions.SectionName));
+
+// RULES LIST:
+builder.Services.AddScoped<IBookingRule, MaxDuration>();
+builder.Services.AddScoped<IBookingRule, FutureStart>();
+builder.Services.AddScoped<IBookingRule, Capacity>();
+builder.Services.AddScoped<IBookingRule, Available>();
+builder.Services.AddScoped<IBookingRule, BookingIntoFuture>();
+builder.Services.AddScoped<IBookingRule, BookingOverlap>();
+//
+
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
+
+
 builder.Services.AddDbContext<AppDbContext>(o => o.UseInMemoryDatabase("MeetingRooms"));
 var app = builder.Build();
 
