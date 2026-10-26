@@ -1,6 +1,24 @@
 @MeetingRooms.Api_HostAddress = http://localhost:5248
 
-GET {{MeetingRooms.Api_HostAddress}}/weatherforecast/
+### Visos rezervacijos
+GET {{MeetingRooms.Api_HostAddress}}/api/reservations
 Accept: application/json
 
-###
+### Cancel neegzistuojanti rezervacija (tikimasi 404)
+POST {{MeetingRooms.Api_HostAddress}}/api/reservations/9999/cancel
+
+### Cancel rezervacija 2 (tikimasi 200)
+POST {{MeetingRooms.Api_HostAddress}}/api/reservations/2/cancel
+
+### Sukurti rezervaciją
+POST {{MeetingRooms.Api_HostAddress}}/api/reservations
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "organizerId": 1,
+  "title": "Test",
+  "start": "2026-10-28T10:00:00",
+  "end": "2026-10-28T11:00:00",
+  "numberOfParticipants": 4
+}

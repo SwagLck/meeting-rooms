@@ -45,7 +45,8 @@ namespace MeetingRooms.Api.Data
                 new Reservation { RoomId = rooms[0].Id, OrganizerId = users[0].Id, Title = "Team Meeting", Start = today.AddDays(1).AddHours(9), End = today.AddDays(1).AddHours(10), NumberOfParticipants = 5, Status = ReservationStatus.Booked },
                 new Reservation { RoomId = rooms[1].Id, OrganizerId = users[1].Id, Title = "Client Presentation", Start = today.AddDays(-2).AddHours(11), End = today.AddDays(-2).AddHours(12), NumberOfParticipants = 10, Status = ReservationStatus.Completed },
                 new Reservation { RoomId = rooms[0].Id, OrganizerId = users[0].Id, Title = "Project Kickoff", Start = today.AddDays(1).AddHours(13), End = today.AddDays(1).AddHours(14), NumberOfParticipants = 8, Status = ReservationStatus.Booked },
-                new Reservation { RoomId = rooms[2].Id, OrganizerId = users[2].Id, Title = "Project Review", Start = today.AddDays(2).AddHours(14), End = today.AddDays(2).AddHours(15), NumberOfParticipants = 7, Status = ReservationStatus.Cancelled }
+                new Reservation { RoomId = rooms[2].Id, OrganizerId = users[2].Id, Title = "Project Review", Start = today.AddDays(2).AddHours(14), End = today.AddDays(2).AddHours(15), NumberOfParticipants = 7, Status = ReservationStatus.Cancelled },
+                new Reservation { RoomId = rooms[4].Id, OrganizerId = users[3].Id, Title = "Testing statuses", Start = DateTime.Now.AddHours(-1), End = DateTime.Now.AddHours(1), NumberOfParticipants = 5, Status = ReservationStatus.Booked}
             );
 
             db.SaveChanges();
