@@ -1,4 +1,5 @@
 using MeetingRooms.Api.Options;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.Extensions.Options;
 
 namespace MeetingRooms.Api.Rules
@@ -20,6 +21,13 @@ namespace MeetingRooms.Api.Rules
                 return Task.FromResult<BookingError?>(new BookingError(
                     "StartInPast",
                     "The start time of the booking cannot be in the past"));
+            }
+
+            if(bookingInformation.End <= bookingInformation.Start)
+            {
+                return Task.FromResult<BookingError?>(new BookingError(
+                    "InvalidTimeRange", "The end time must be after the start time"
+                ));
             }
 
             return Task.FromResult<BookingError?>(null);

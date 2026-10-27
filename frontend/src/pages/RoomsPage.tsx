@@ -46,7 +46,11 @@ export default function RoomPage(){
             label="Minimum capacity"
             type="number"
             value={minCapacity}
-            onChange={(e) => setMinCapacity(e.target.value)}
+            onChange={(e) => {
+                const value = e.target.value;
+                if (value === "" || Number(value) >= 1) setMinCapacity(value);
+            }}
+            slotProps={{ htmlInput: { min: 1 } }}
             sx={{ width: 160 }}
             />
             <TextField

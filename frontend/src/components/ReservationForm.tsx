@@ -57,11 +57,17 @@ export default function ReservationForm({ open, rooms, users, onClose, onCreated
     }
 
     function handleStartDateChange(value: string) {
-        setForm((prev) => ({
+    setForm((prev) => {
+        const newEndDate = !prev.endDate || prev.endDate < value ? value : prev.endDate;
+        return {
             ...prev,
             startDate: value,
-            endDate: !prev.endDate || prev.endDate < value ? value : prev.endDate,
-        }));
+            endDate: newEndDate,
+            // jei dabar ta pati diena ir pabaiga nebevėlesnė už pradžią, išvalome
+            endTime:
+                newEndDate === value && prev.endTime <= prev.startTime ? "" : prev.endTime,
+            };
+        });
     }
 
     const isFilled =
@@ -69,6 +75,8 @@ export default function ReservationForm({ open, rooms, users, onClose, onCreated
         form.startDate && form.startTime && form.endDate && form.endTime &&
         form.numberOfParticipants;
 
+
+    
     async function handleSubmit() {
         setSubmitting(true);
         setError(null);
@@ -77,8 +85,8 @@ export default function ReservationForm({ open, rooms, users, onClose, onCreated
                 roomId: Number(form.roomId),
                 organizerId: Number(form.organizerId),
                 title: form.title.trim(),
-                start: new Date(`${form.startDate}T${form.startTime}`).toISOString(),
-                end: new Date(`${form.endDate}T${form.endTime}`).toISOString(),
+                start: `${form.startDate}T${form.startTime}:00`,
+                end: `${form.endDate}T${form.endTime}:00`,
                 numberOfParticipants: Number(form.numberOfParticipants),
             });
             onCreated();
@@ -92,6 +100,11 @@ export default function ReservationForm({ open, rooms, users, onClose, onCreated
             setSubmitting(false);
         }
     }
+
+    const endTimesSlots =
+        form.startDate && form.startDate === form.endDate && form.startDate
+        ? TIME_SLOTS.filter((t) => t > form.startTime)
+        : TIME_SLOTS;
 
     return (
         <Dialog open={open} onClose={submitting ? undefined : onClose} fullWidth maxWidth="sm">
@@ -135,7 +148,14 @@ export default function ReservationForm({ open, rooms, users, onClose, onCreated
                             }} required />
 
                         <TextField select fullWidth label="Start time" value={form.startTime}
-                            onChange={(e) => setField("startTime", e.target.value)}
+                            onChange={(e) => {
+                                const newStart = e.target.value;
+                                setForm((prev) => ({
+                                    ...prev,
+                                    startTime: newStart,
+                                    endTime: prev.startDate === prev.endDate && prev.endTime <= newStart ? "" : prev.endTime,
+                                }));
+                            }}
                             slotProps={{ select: { MenuProps: { slotProps: { paper: { sx: { maxHeight: 300 } } } } } }}
                             required>
                             {TIME_SLOTS.map((t) => (
@@ -156,7 +176,7 @@ export default function ReservationForm({ open, rooms, users, onClose, onCreated
                             onChange={(e) => setField("endTime", e.target.value)}
                             slotProps={{ select: { MenuProps: { slotProps: { paper: { sx: { maxHeight: 300 } } } } } }}
                             required>
-                            {TIME_SLOTS.map((t) => (
+                            {endTimesSlots.map((t) => (
                                 <MenuItem key={t} value={t}>{t}</MenuItem>
                             ))}
                         </TextField>
