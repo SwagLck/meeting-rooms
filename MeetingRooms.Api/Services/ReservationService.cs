@@ -120,7 +120,7 @@ namespace MeetingRooms.Api.Services
             if(reservation is null)
             {
                 return ServiceResult<ReservationDto>.Fail(
-                    new BookingError("ReservationNotFound", "Reservation {id} does not exist")
+                    new BookingError("ReservationNotFound", $"Reservation {id} does not exist")
                 );
             }
 

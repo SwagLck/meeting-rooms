@@ -26,7 +26,7 @@ namespace MeetingRooms.Api.Rules
             {
                 return new BookingError(
                     "OrganizerOverlap",
-                    "The requested booking time overlaps with an existing booking.");
+                    "The requested booking time overlaps with an existing booking");
             }
 
             return null;

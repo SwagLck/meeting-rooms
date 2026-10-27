@@ -16,7 +16,7 @@ export interface User{
     id: number;
     firstName: string;
     lastName: string;
-    activeReservationCount: number;
+    activeReservationsCount: number;
 }
 
 export interface Reservation{
@@ -35,4 +35,13 @@ export interface Reservation{
 export interface ApiError{
     code: string;
     message: string;
+}
+
+export interface CreateReservationRequest {
+    roomId: number;
+    organizerId: number;
+    title: string;
+    start: string;
+    end: string;
+    numberOfParticipants: number;
 }

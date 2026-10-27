@@ -35,16 +35,16 @@ namespace MeetingRooms.Api.Controllers
         }
 
         [HttpPost("{id}/cancel")]
-        public async Task<IActionResult> Cancel(int reservationId)
+        public async Task<IActionResult> Cancel(int id)
         {
-            var result = await _reservations.CancelAsync(reservationId);
+            var result = await _reservations.CancelAsync(id);
             return ToActionResult(result);
         }
 
         [HttpPost("{id}/end")]
-        public async Task<IActionResult> EndEarly(int reservationId)
+        public async Task<IActionResult> EndEarly(int id)
         {
-            var result = await _reservations.EndEarlyAsync(reservationId);
+            var result = await _reservations.EndEarlyAsync(id);
             return ToActionResult(result);
         }
 

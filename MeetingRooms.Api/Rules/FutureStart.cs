@@ -19,7 +19,7 @@ namespace MeetingRooms.Api.Rules
             {
                 return Task.FromResult<BookingError?>(new BookingError(
                     "StartInPast",
-                    "The start time of the booking cannot be in the past."));
+                    "The start time of the booking cannot be in the past"));
             }
 
             return Task.FromResult<BookingError?>(null);
